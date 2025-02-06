@@ -714,8 +714,9 @@ class ArgslistMenu:
                 self.previous_arg()
             elif c == 9:
                 if Gui.cmd.args:
-                    # autocomplete the current argument
-                    if Gui.cmd.args[self.current_arg][1]:
+                    current_value = Gui.cmd.args[self.current_arg][1]
+                    # autocomplete the current argument if the value starts with '/'
+                    if current_value.startswith('/'):
                         self.autocomplete_arg()
                     # go to the next argument
                     else:
