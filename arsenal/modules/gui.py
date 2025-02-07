@@ -376,6 +376,26 @@ class CheatslistMenu:
                         self.xcursor = self.x_init + len(self.input_buffer)
                         self.position = 0
                         self.page_position = 0
+            elif c == 21:
+                # Clear the entire input box (ctrl + u)
+                self.input_buffer = ''
+                self.xcursor = self.x_init
+                self.position = 0
+                self.page_position = 0
+            elif c == 23:
+                # Delete the last word (ctrl + w)
+                word_delimiters = "/ @:|=\"'`,+"
+                idx = self.xcursor - self.x_init
+                if idx > 0:
+                    while idx > 0 and self.input_buffer[idx - 1] in word_delimiters:
+                        idx -= 1
+                    new_idx = idx
+                    while new_idx > 0 and self.input_buffer[new_idx - 1] not in word_delimiters:
+                        new_idx -= 1
+                    self.input_buffer = (self.input_buffer[:new_idx] + self.input_buffer[self.xcursor - self.x_init:])
+                    self.xcursor = self.x_init + new_idx
+                    self.position = 0
+                    self.page_position = 0
             elif 20 <= c < 127:
                 i = self.xcursor - self.x_init
                 self.input_buffer = self.input_buffer[:i] + chr(c) + self.input_buffer[i:]
@@ -758,6 +778,25 @@ class ArgslistMenu:
             elif c == curses.KEY_END:
                 # Move cursor to the END
                 self.xcursor = self.x_init + len(Gui.cmd.args[self.current_arg][1])
+            elif c == 21:
+                # Clear the entire input box (ctrl + u)
+                if Gui.cmd.nb_args > 0:
+                    Gui.cmd.args[self.current_arg][1] = ''
+                    self.xcursor = self.x_init
+            elif c == 23:
+                # Delete the last word (ctrl + w)
+                word_delimiters = "/ @:|=\"'`,+"
+                if Gui.cmd.nb_args > 0:
+                    current_text = Gui.cmd.args[self.current_arg][1]
+                    idx = self.xcursor - self.x_init
+                    if idx > 0:
+                        while idx > 0 and current_text[idx - 1] in word_delimiters:
+                            idx -= 1
+                        new_idx = idx
+                        while new_idx > 0 and current_text[new_idx - 1] not in word_delimiters:
+                            new_idx -= 1
+                        Gui.cmd.args[self.current_arg][1] = (current_text[:new_idx] + current_text[self.xcursor - self.x_init:])
+                        self.xcursor = self.x_init + new_idx
             elif 20 <= c < 127 and Gui.cmd.nb_args > 0:
                 i = self.xcursor - self.x_init
                 Gui.cmd.args[self.current_arg][1] = Gui.cmd.args[self.current_arg][1][:i] + chr(c) + \
