@@ -14,7 +14,7 @@ CHEATS_PATHS = [
     join(BASEPATH, "my_cheats"),
     join(HOMEPATH, ".cheats"),
     # Add exegol folder
-    "/opt/my-resources/my-cheats"
+    "/opt/my-resources/my-cheats",
     "/opt/my-resources/setup/arsenal-cheats",
     # Default path
     join(DATAPATH, "cheats")
