@@ -77,18 +77,17 @@ class Command:
         if self.nb_args == 0 :
             return True
         argsval = [a[1] for a in self.args]
-        if "" not in argsval:
-            # split cmdline at each arg position
-            regex = ''.join('<' + arg[0] + '>|' for arg in self.args)[:-1]
-            cmdparts = re.split(regex, self.cmdline)
-            # concat command parts and arguments values to build the command
-            self.cmdline = ""
-            for i in range(len(cmdparts) + len(self.args)):
-                if i % 2 == 0:
-                    self.cmdline += cmdparts[i // 2]
-                else:
-                    self.cmdline += argsval[(i - 1) // 2]
-            curses.endwin()
+        # split cmdline at each arg position
+        regex = ''.join('<' + arg[0] + '>|' for arg in self.args)[:-1]
+        cmdparts = re.split(regex, self.cmdline)
+        # concat command parts and arguments values to build the command
+        self.cmdline = ""
+        for i in range(len(cmdparts) + len(self.args)):
+            if i % 2 == 0:
+                self.cmdline += cmdparts[i // 2]
+            else:
+                self.cmdline += argsval[(i - 1) // 2]
+        curses.endwin()
 
         # build ok ?
         return "" not in argsval
